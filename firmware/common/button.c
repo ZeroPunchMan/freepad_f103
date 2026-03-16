@@ -16,19 +16,84 @@ typedef struct
     BtnGetPress getPress;
 } ButtonDef_t;
 
-static inline bool IsPairPress(void)
+static bool IsPairPress(void)
 { 
     return LL_GPIO_IsInputPinSet(BTN_PAIR_PORT, BTN_PAIR_PIN);
 }
 
-static inline bool IsAPress(void)
+static bool IsXPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_X_PORT, BTN_X_PIN);
+}
+
+static bool IsYPress(void)
+{
+    return LL_GPIO_IsInputPinSet(BTN_Y_PORT, BTN_Y_PIN);
+}
+
+static bool IsAPress(void)
 { 
     return LL_GPIO_IsInputPinSet(BTN_A_PORT, BTN_A_PIN);
 }
 
-static inline bool IsYPress(void)
-{
-    return LL_GPIO_IsInputPinSet(BTN_Y_PORT, BTN_Y_PIN);
+static bool IsBPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_B_PORT, BTN_B_PIN);
+}
+
+static bool IsUpPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_UP_PORT, BTN_UP_PIN);
+}
+
+static bool IsDownPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_DOWN_PORT, BTN_DOWN_PIN);
+}
+
+static bool IsLeftPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_LEFT_PORT, BTN_LEFT_PIN);
+}
+
+static bool IsRightPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_RIGHT_PORT, BTN_RIGHT_PIN);
+}
+
+static bool IsViewPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_VIEW_PORT, BTN_VIEW_PIN);
+}
+
+static bool IsMenuPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_MENU_PORT, BTN_MENU_PIN);
+}
+
+static bool IsLStickPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_LSTICK_PORT, BTN_LSTICK_PIN);
+}
+
+static bool IsRStickPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_RSTICK_PORT, BTN_RSTICK_PIN);
+}
+
+static bool IsLbPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_LB_PORT, BTN_LB_PIN);
+}
+
+static bool IsRbPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_RB_PORT, BTN_RB_PIN);
+}
+
+static bool IsXboxPress(void)
+{ 
+    return LL_GPIO_IsInputPinSet(BTN_XBOX_PORT, BTN_XBOX_PIN);
 }
 
 const ButtonDef_t buttonDef[BtnIdx_Max] =
@@ -36,11 +101,50 @@ const ButtonDef_t buttonDef[BtnIdx_Max] =
         [BtnIdx_Pair] = {
             .getPress = IsPairPress,
         },
-        [BtnIdx_A] = {
-            .getPress = IsAPress,
+        [BtnIdx_X] = {
+            .getPress = IsXPress,
         },
         [BtnIdx_Y] = {
             .getPress = IsYPress,
+        },
+        [BtnIdx_A] = {
+            .getPress = IsAPress,
+        },
+        [BtnIdx_B] = {
+            .getPress = IsBPress,
+        },
+        [BtnIdx_Up] = {
+            .getPress = IsUpPress,
+        },
+        [BtnIdx_Down] = {
+            .getPress = IsDownPress,
+        },
+        [BtnIdx_Left] = {
+            .getPress = IsLeftPress,
+        },
+        [BtnIdx_Right] = {
+            .getPress = IsRightPress,
+        },
+        [BtnIdx_View] = {
+            .getPress = IsViewPress,
+        },
+        [BtnIdx_Menu] = {
+            .getPress = IsMenuPress,
+        },
+        [BtnIdx_LStick] = {
+            .getPress = IsLStickPress,
+        },
+        [BtnIdx_RStick] = {
+            .getPress = IsRStickPress,
+        },
+        [BtnIdx_LB] = {
+            .getPress = IsLbPress,
+        },
+        [BtnIdx_RB] = {
+            .getPress = IsRbPress,
+        },
+        [BtnIdx_Xbox] = {
+            .getPress = IsXboxPress,
         },
 };
 
@@ -148,4 +252,9 @@ void Button_Process(void)
             }
         }
     }
+}
+
+bool Button_IsPress(ButtonIdx_t idx)
+{
+    return buttonContext[idx].status > BtnSta_Up;
 }

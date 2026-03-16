@@ -3,7 +3,7 @@
 
 #define MAJOR_VER_NUMBER (0)
 #define MINOR_VER_NUMBER (0)
-#define PATCH_VER_NUMBER (6)
+#define PATCH_VER_NUMBER (7)
 
 const FirmwareInfo_t appFwInfo __attribute__((section(".ARM.__AT_0x08013800"))) = {
     .verMajor = MAJOR_VER_NUMBER,

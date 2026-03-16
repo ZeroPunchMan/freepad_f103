@@ -12,6 +12,7 @@
 #include "math.h"
 #include "board.h"
 #include "vector2.h"
+#include "button.h"
 
 static PadReport_t padReport = {
     .leftX = 0, // -32767 ~ 32767
@@ -40,32 +41,32 @@ typedef struct
     uint32_t pin;
 } BtnPinDef_t;
 // button[0]: R3 L3 LM RM 右 左 下 上 bit7~bit0
-BtnPinDef_t btn0PinDef[8] = {
-    [7] = {BTN_RSTICK_PORT, BTN_RSTICK_PIN},
-    [6] = {BTN_LSTICK_PORT, BTN_LSTICK_PIN},
-    [5] = {BTN_LMENU_PORT, BTN_LMENU_PIN},
-    [4] = {BTN_RMENU_PORT, BTN_RMENU_PIN},
-    [3] = {BTN_RIGHT_PORT, BTN_RIGHT_PIN},
-    [2] = {BTN_LEFT_PORT, BTN_LEFT_PIN},
-    [1] = {BTN_DOWN_PORT, BTN_DOWN_PIN},
-    [0] = {BTN_UP_PORT, BTN_UP_PIN},
-};
+// BtnPinDef_t btn0PinDef[8] = {
+//     [7] = {BTN_RSTICK_PORT, BTN_RSTICK_PIN},
+//     [6] = {BTN_LSTICK_PORT, BTN_LSTICK_PIN},
+//     [5] = {BTN_VIEW_PORT, BTN_VIEW_PIN},
+//     [4] = {BTN_MENU_PORT, BTN_MENU_PIN},
+//     [3] = {BTN_RIGHT_PORT, BTN_RIGHT_PIN},
+//     [2] = {BTN_LEFT_PORT, BTN_LEFT_PIN},
+//     [1] = {BTN_DOWN_PORT, BTN_DOWN_PIN},
+//     [0] = {BTN_UP_PORT, BTN_UP_PIN},
+// };
 // button[1]: Y X B A PAIR XBOX RB LB
-BtnPinDef_t btn1PinDef[8] = {
-    [7] = {BTN_Y_PORT, BTN_Y_PIN},
-    [6] = {BTN_X_PORT, BTN_X_PIN},
-    [5] = {BTN_B_PORT, BTN_B_PIN},
-    [4] = {BTN_A_PORT, BTN_A_PIN},
-    [3] = {BTN_PAIR_PORT, BTN_PAIR_PIN},
-    [2] = {BTN_XBOX_PORT, BTN_XBOX_PIN},
-    [1] = {BTN_RB_PORT, BTN_RB_PIN},
-    [0] = {BTN_LB_PORT, BTN_LB_PIN},
-};
+// BtnPinDef_t btn1PinDef[8] = {
+//     [7] = {BTN_Y_PORT, BTN_Y_PIN},
+//     [6] = {BTN_X_PORT, BTN_X_PIN},
+//     [5] = {BTN_B_PORT, BTN_B_PIN},
+//     [4] = {BTN_A_PORT, BTN_A_PIN},
+//     [3] = {BTN_PAIR_PORT, BTN_PAIR_PIN},
+//     [2] = {BTN_XBOX_PORT, BTN_XBOX_PIN},
+//     [1] = {BTN_RB_PORT, BTN_RB_PIN},
+//     [0] = {BTN_LB_PORT, BTN_LB_PIN},
+// };
 
-static inline bool IsButtonPressed(GPIO_TypeDef *port, uint32_t pin)
-{
-    return LL_GPIO_IsInputPinSet(port, pin);
-}
+// static inline bool IsButtonPressed(GPIO_TypeDef *port, uint32_t pin)
+// {
+//     return LL_GPIO_IsInputPinSet(port, pin);
+// }
 
 static uint8_t HallAdcToHid(uint16_t adc, uint16_t min, uint16_t max)
 { // uint8_t
@@ -98,19 +99,26 @@ void PadFunc_Process(void)
 
         // button0
         padReport.button[0] = 0;
-        for (int i = 0; i < 8; i++)
-        {
-            if (IsButtonPressed(btn0PinDef[i].port, btn0PinDef[i].pin))
-                padReport.button[0] |= 1 << i;
-        }
+        padReport.button[0] |= Button_IsPress(BtnIdx_Up) << 0;
+        padReport.button[0] |= Button_IsPress(BtnIdx_Down) << 1;
+        padReport.button[0] |= Button_IsPress(BtnIdx_Left) << 2;
+        padReport.button[0] |= Button_IsPress(BtnIdx_Right) << 3;
+        padReport.button[0] |= Button_IsPress(BtnIdx_Menu) << 4;
+        padReport.button[0] |= Button_IsPress(BtnIdx_View) << 5;
+        padReport.button[0] |= Button_IsPress(BtnIdx_LStick) << 6;
+        padReport.button[0] |= Button_IsPress(BtnIdx_RStick) << 7;
+        
 
         // button1
         padReport.button[1] = 0;
-        for (int i = 0; i < 8; i++)
-        {
-            if (IsButtonPressed(btn1PinDef[i].port, btn1PinDef[i].pin))
-                padReport.button[1] |= 1 << i;
-        }
+        padReport.button[1] |= Button_IsPress(BtnIdx_LB) << 0;
+        padReport.button[1] |= Button_IsPress(BtnIdx_RB) << 1;
+        padReport.button[1] |= Button_IsPress(BtnIdx_Xbox) << 2;
+        padReport.button[1] |= Button_IsPress(BtnIdx_Pair) << 3;
+        padReport.button[1] |= Button_IsPress(BtnIdx_A) << 4;
+        padReport.button[1] |= Button_IsPress(BtnIdx_B) << 5;
+        padReport.button[1] |= Button_IsPress(BtnIdx_X) << 6;
+        padReport.button[1] |= Button_IsPress(BtnIdx_Y) << 7;
 
         // CL_LOG_INFO("button: %02x, %02x", padReport.button[0], padReport.button[1]);
 
