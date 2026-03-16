@@ -204,7 +204,7 @@ static void OnRecvAppVerReq(void)
 
     Comm_SendMsg(SpgCmd_Dfu, SgpSubCmd_AppVerRsp, data, sizeof(data));
 
-    CL_LOG_INFO("send boot version");
+    CL_LOG_INFO("send app version");
 }
 
 void OnRecvDfuRequest(const SgpPacket_t *pack)

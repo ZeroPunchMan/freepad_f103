@@ -23,15 +23,6 @@ extern "C"
 #define CL_LOG_LEVEL_WARN
 #define CL_LOG_LEVEL_ERROR
 
-#define CL_LOG_ASSERT_ENABLED (1)
-#define CL_LOG_CALI_ENABLED (1)
-#define CL_LOG_PAD_ENABLED (0)
-#define CL_LOG_APP_ENABLED (0)
-#define CL_LOG_USB_ENABLED (0)
-#define CL_LOG_BUTTON_ENABLED (0)
-#define CL_LOG_LED_ENABLED (0)
-#define CL_LOG_SGP_ENABLED (0)
-
 #ifdef __cplusplus
 }
 #endif
